@@ -39,14 +39,14 @@ class _GalaxyScreenState extends State<GalaxyScreen>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(minutes: 60), // Slower rotation
+      duration: const Duration(hours: 60), // Slower rotation
     )..addListener(() {
-        _thresholdValueNotifier.value = _controller.value * 100 * pi;
+        _thresholdValueNotifier.value = _controller.value * 1000 * pi;
         _galaxyController.updateStarsAndPlanets(
            _thresholdValueNotifier.value); // Update stars and planets on each tick
       });
     _thresholdValueNotifier =
-        ThresholdValueNotifier(0.0, 0); // Set your desired threshold here
+        ThresholdValueNotifier(0.0, 0.001); // Set your desired threshold here
     _galaxyController = GalaxyController(1000, 100, 200,
         0); // Initialize with 1000 stars, 100 planets, 200 random stars, and 500 galaxy dust particles
     _controller.repeat();

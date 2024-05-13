@@ -45,7 +45,7 @@ class GalaxyController {
       int alpha = (100 + (156 * (1 - z)).toInt());
       Color color = Color.fromARGB(alpha, 255, 255, 255);
 
-      randomStars.add(Star(Offset(x, y), 0, 0, z, color, radius));
+      randomStars.add(Star(Offset(x, y), random.nextDouble() * 2 * pi, 0, z, color, radius));
     }
   }
 
@@ -56,8 +56,7 @@ class GalaxyController {
       double z = random.nextDouble();
       double radius = random.nextDouble() * 3 * (1 - z);
       int alpha = (50 + (100 * (1 - z)).toInt());
-      Color color =
-          Color.fromARGB(alpha, 139, 69, 19); // Brownish color for dust
+      Color color = Color.fromARGB(alpha, 139, 69, 19); // Brownish color for dust
 
       galaxyDust.add(Star(Offset(x, y), 0, 0, z, color, radius));
     }
@@ -87,8 +86,7 @@ class GalaxyController {
     }
   }
 
-  void _generateSpiralPlanets(
-      int count, int arms, double width, double height) {
+  void _generateSpiralPlanets(int count, int arms, double width, double height) {
     double centerX = width / 2;
     double centerY = height / 2;
     double maxRadius = width / 2;
@@ -103,11 +101,9 @@ class GalaxyController {
         double x = centerX + r * cos(angle);
         double y = centerY + r * sin(angle);
         double z = random.nextDouble();
-        double radius = (random.nextDouble() * 3 + 2) *
-            (1 - z); // Larger radius for planets in foreground
+        double radius = (random.nextDouble() * 3 + 2) * (1 - z); // Larger radius for planets in foreground
         int alpha = (200 + (55 * (1 - z)).toInt());
-        Color color = Color.fromARGB(alpha, random.nextInt(256),
-            random.nextInt(256), random.nextInt(256));
+        Color color = Color.fromARGB(alpha, random.nextInt(256), random.nextInt(256), random.nextInt(256));
 
         planets.add(Star(Offset(x, y), angle, r, z, color, radius));
       }
@@ -118,16 +114,22 @@ class GalaxyController {
     double centerX = 200; // Assuming a fixed size of 400x400
     double centerY = 200;
 
-    // Update stars to move in circular pattern
+    // Update spiral stars to move in circular pattern
     for (var star in stars) {
-      double angle = star.initialAngle + time ; // Slow movement
+      double angle = star.initialAngle + time; // Slow movement
       double x = centerX + star.initialRadius * cos(angle);
       double y = centerY + star.initialRadius * sin(angle);
       star.position = Offset(x, y);
 
-      // Make stars dim and lighten
-      int alpha =
-          (100 + (156 * (1 - star.z) * (0.5 + 0.5 * sin(time * 10))).toInt());
+      // Make stars dim and lighten randomly
+      int alpha = (100 + random.nextInt(156)).toInt();
+      star.color = Color.fromARGB(alpha, 255, 255, 255);
+    }
+
+    // Update random stars to twinkle
+    for (var star in randomStars) {
+      // Make stars dim and lighten randomly
+      int alpha = (100 + random.nextInt(156)).toInt();
       star.color = Color.fromARGB(alpha, 255, 255, 255);
     }
 
@@ -140,3 +142,4 @@ class GalaxyController {
     }
   }
 }
+
