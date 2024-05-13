@@ -23,6 +23,7 @@ class GalaxyController {
   final int randomStarCount;
   final int galaxyDustCount;
   final Random random = Random();
+  int twinkleCounter = 0;
 
   GalaxyController(this.starCount, this.planetCount, this.randomStarCount,
       this.galaxyDustCount) {
@@ -45,7 +46,8 @@ class GalaxyController {
       int alpha = (100 + (156 * (1 - z)).toInt());
       Color color = Color.fromARGB(alpha, 255, 255, 255);
 
-      randomStars.add(Star(Offset(x, y), random.nextDouble() * 2 * pi, 0, z, color, radius));
+      randomStars.add(Star(
+          Offset(x, y), random.nextDouble() * 2 * pi, 0, z, color, radius));
     }
   }
 
@@ -56,7 +58,8 @@ class GalaxyController {
       double z = random.nextDouble();
       double radius = random.nextDouble() * 3 * (1 - z);
       int alpha = (50 + (100 * (1 - z)).toInt());
-      Color color = Color.fromARGB(alpha, 139, 69, 19); // Brownish color for dust
+      Color color =
+          Color.fromARGB(alpha, 139, 69, 19); // Brownish color for dust
 
       galaxyDust.add(Star(Offset(x, y), 0, 0, z, color, radius));
     }
@@ -73,7 +76,8 @@ class GalaxyController {
 
       for (int j = 0; j < count / arms; j++) {
         double r = sqrt(random.nextDouble()) * maxRadius;
-        double angle = r / maxRadius * 4 * pi + angleOffset; // Spiral angle calculation
+        double angle =
+            r / maxRadius * 4 * pi + angleOffset; // Spiral angle calculation
         double x = centerX + r * cos(angle);
         double y = centerY + r * sin(angle);
         double z = random.nextDouble();
@@ -86,7 +90,8 @@ class GalaxyController {
     }
   }
 
-  void _generateSpiralPlanets(int count, int arms, double width, double height) {
+  void _generateSpiralPlanets(
+      int count, int arms, double width, double height) {
     double centerX = width / 2;
     double centerY = height / 2;
     double maxRadius = width / 2;
@@ -97,13 +102,16 @@ class GalaxyController {
 
       for (int j = 0; j < count / arms; j++) {
         double r = sqrt(random.nextDouble()) * maxRadius;
-        double angle = r / maxRadius * 4 * pi + angleOffset; // Spiral angle calculation
+        double angle =
+            r / maxRadius * 4 * pi + angleOffset; // Spiral angle calculation
         double x = centerX + r * cos(angle);
         double y = centerY + r * sin(angle);
         double z = random.nextDouble();
-        double radius = (random.nextDouble() * 3 + 2) * (1 - z); // Larger radius for planets in foreground
+        double radius = (random.nextDouble() * 3 + 2) *
+            (1 - z); // Larger radius for planets in foreground
         int alpha = (200 + (55 * (1 - z)).toInt());
-        Color color = Color.fromARGB(alpha, random.nextInt(256), random.nextInt(256), random.nextInt(256));
+        Color color = Color.fromARGB(alpha, random.nextInt(256),
+            random.nextInt(256), random.nextInt(256));
 
         planets.add(Star(Offset(x, y), angle, r, z, color, radius));
       }
@@ -114,6 +122,9 @@ class GalaxyController {
     double centerX = 200; // Assuming a fixed size of 400x400
     double centerY = 200;
 
+    // Increment the twinkle counter
+    twinkleCounter++;
+
     // Update spiral stars to move in circular pattern
     for (var star in stars) {
       double angle = star.initialAngle + time; // Slow movement
@@ -121,16 +132,20 @@ class GalaxyController {
       double y = centerY + star.initialRadius * sin(angle);
       star.position = Offset(x, y);
 
-      // Make stars dim and lighten randomly
-      int alpha = (100 + random.nextInt(156)).toInt();
-      star.color = Color.fromARGB(alpha, 255, 255, 255);
+      // Slow down the twinkling effect
+      if (twinkleCounter % 15 == 0) {
+        int alpha = (100 + random.nextInt(156)).toInt();
+        star.color = Color.fromARGB(alpha, 255, 255, 255);
+      }
     }
 
     // Update random stars to twinkle
     for (var star in randomStars) {
-      // Make stars dim and lighten randomly
-      int alpha = (100 + random.nextInt(156)).toInt();
-      star.color = Color.fromARGB(alpha, 255, 255, 255);
+      // Slow down the twinkling effect
+      if (twinkleCounter % 15 == 0) {
+        int alpha = (100 + random.nextInt(156)).toInt();
+        star.color = Color.fromARGB(alpha, 255, 255, 255);
+      }
     }
 
     // Update planets to move in circular pattern
@@ -140,6 +155,10 @@ class GalaxyController {
       double y = centerY + planet.initialRadius * sin(angle);
       planet.position = Offset(x, y);
     }
+
+    // Reset the counter periodically to avoid overflow
+    if (twinkleCounter >= 1000) {
+      twinkleCounter = 0;
+    }
   }
 }
-

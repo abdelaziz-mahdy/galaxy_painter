@@ -41,7 +41,7 @@ class _GalaxyScreenState extends State<GalaxyScreen>
       vsync: this,
       duration: const Duration(hours: 60), // Slower rotation
     )..addListener(() {
-        _thresholdValueNotifier.value = _controller.value * 1000 * pi;
+        _thresholdValueNotifier.value = _controller.value * 3000 * pi;
         _galaxyController.updateStarsAndPlanets(
            _thresholdValueNotifier.value); // Update stars and planets on each tick
       });
