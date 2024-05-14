@@ -24,7 +24,7 @@ This Flutter application is a demonstration of how to render a galaxy on a Flutt
 1. **Clone the repository:**
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/abdelaziz-mahdy/galaxy_painter
 cd galaxy_painter
 ```
 
